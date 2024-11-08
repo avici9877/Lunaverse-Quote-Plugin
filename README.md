@@ -1,147 +1,82 @@
-需求文档：Lunaverse Quote Plugin 报价管理插件
-项目概述
-Lunaverse Quote Plugin 是一个 WordPress 插件，用于管理和展示报价信息。它支持后台配置、报价导入/导出、列标题自定义以及前端显示等功能。本需求文档定义了插件的需求，以确保前端和后台数据的一致性和灵活性。
+# Lunaverse Quote Plugin
 
-1. 功能需求
-1.1 后台功能
-1.1.1 插件激活与卸载
-激活功能：插件激活时自动创建必要的数据库表，用于存储报价数据。
-卸载功能：插件卸载时清理数据库，删除相关的表或数据（可选）。
-1.1.2 报价管理页面
-在 WordPress 管理后台添加一个菜单项 “Lunaverse报价”，点击进入 报价管理页面，包含以下功能：
+**Lunaverse Quote Plugin** 是一个功能强大的 WordPress 插件，用于管理和展示 Lunaverse 的报价信息。插件为管理员提供了灵活的后台设置选项，包括自定义列标题、导入导出功能，并支持在前端显示结构化的报价表格。
 
-报价数据表：
+## 插件信息
+- **插件名称**：Lunaverse Quote Plugin
+- **描述**：用于管理和展示 Lunaverse 的报价信息。支持自定义列标题、导入导出 CSV 报价数据，以及在前端展示报价列表。
+- **版本**：5.8
+- **作者**：Sange - 面向 ChatGPT 编程
+- **发布日期**：2024/11/7
 
-显示报价信息，包括序号、产品名称、价格、单位、库存位置、备注、最小订单数量、更新时间等列。
-支持编辑、删除和批量操作。
-自定义列标题：
+## 功能概览
 
-提供输入框，允许管理员自定义每一列的标题。
-保存自定义列标题到数据库，以便前端展示时同步更新。
-导入导出功能：
+### 1. 后台管理功能
+- **自定义列标题**：管理员可以自定义报价表格的列标题，修改后的标题将自动应用于前端显示。
+- **数据管理**：提供导入和导出功能，支持从 CSV 文件导入报价数据，并将报价数据导出到 CSV 文件中。
+- **报价数据增删改**：管理员可以在后台管理页面直接编辑报价数据，并能添加新行或删除选定行。
+  
+### 2. 前端显示功能
+- **短代码展示**：通过 `[display_quotes]` 短代码，可以将报价列表轻松嵌入到 WordPress 页面或文章中，方便访客查看。
+- **前端表格样式**：报价表格采用简洁明了的样式，支持响应式设计，保证在移动端和桌面端均有良好的显示效果。
+- **同步后台列标题**：前端显示的列标题与后台设置的列标题保持一致，便于管理员随时更新。
 
-导入 CSV：支持从 CSV 文件导入报价数据，将数据写入数据库中。
-导出 CSV：支持将数据库中的报价数据导出到 CSV 文件。
-1.1.3 数据库交互
-创建数据库表：在插件激活时创建用于存储报价数据的表，包含必要字段，如 display_order, product, price, unit, stock_location, notes, min_order_quantity, created_at。
-保存和获取自定义列标题：保存自定义列标题到 WordPress options 表，获取列标题时，优先使用用户自定义标题。
-1.2 前端功能
-1.2.1 报价列表显示
-短代码：提供 [display_quotes] 短代码，在 WordPress 页面中使用，前端显示报价列表。
-动态列标题：前端表格的列标题动态获取后台自定义的列标题，保持一致。
-表格内容：显示后台管理的报价信息，包括序号、产品名称、价格、单位、库存位置、备注、最小订单数量、更新时间等列。
-样式：表格样式美观，支持响应式设计，适配不同屏幕尺寸。
-2. 技术实现
-2.1 后台实现
-2.1.1 数据库创建和删除
-函数：lunaverse_create_db_table()，在插件激活时调用，用于创建数据库表。
-结构：数据库表包含报价的各个字段，每一列字段类型根据存储的数据确定（如 int, varchar, decimal 等）。
-2.1.2 插件文件结构
-插件按照模块化结构划分为不同文件，以提升代码可读性和维护性。具体结构如下：
+### 3. 版本更新历史
+#### v5.8 (2024/11/7)
+- **插件发布**：Lunaverse Quote Plugin 首个版本发布。
+- **新增自定义列标题**：管理员可在后台自定义报价表的列标题，支持任意文本修改。
+- **导入导出功能**：支持从 CSV 文件导入和导出报价数据，简化数据管理。
+- **短代码 `[display_quotes]`**：使用短代码展示报价列表，前端表格自动适应后台自定义的列标题。
+- **样式优化**：前端报价表格样式经过精心设计，支持响应式显示，并有悬停行高亮效果。
 
-/lunaverse-quote-plugin
-├── lunaverse-quote-plugin.php         // 插件主文件，负责加载核心模块和功能
-├── includes
-│   ├── lunaverse-quote-core.php       // 核心功能模块（数据库操作、获取列标题等）
-│   └── lunaverse-quote-admin.php      // 后台管理功能（页面渲染、自定义列标题、导入导出功能）
-├── frontend
-│   ├── display-page.php               // 前端显示报价列表的逻辑
-│   └── style.css                      // 前端表格样式
+#### v5.7
+- **代码拆分与模块化**：将插件功能拆分成多个文件和模块，以提高代码的可读性和维护性。
+  - `lunaverse-quote-core.php`：核心功能文件，包含数据库交互和列标题管理。
+  - `lunaverse-quote-admin.php`：后台管理文件，负责导入、导出和数据管理界面。
+  - `display-page.php`：短代码展示页面逻辑，便于前端调用和样式维护。
+  
+#### v5.6
+- **新增样式文件**：引入 `frontend/style.css` 样式文件，专门用于前端表格的样式，确保前端显示效果一致。
+- **错误处理改进**：加入日志输出与错误处理机制，便于管理员在调试时查找问题。
 
-2.1.3 自定义列标题逻辑
-保存列标题：在 lunaverse_save_column_titles() 中，读取管理员输入的自定义列标题，并将其保存到数据库。
-获取列标题：在 lunaverse_get_column_titles() 中，优先从数据库获取自定义标题；若无自定义标题，则使用默认值。
-2.1.4 导入导出功能
-导入 CSV：lunaverse_import_csv()，读取 CSV 文件内容，并将其保存到数据库。
-导出 CSV：lunaverse_export_csv()，从数据库读取报价数据，并生成 CSV 文件供下载。
-2.2 前端实现
-2.2.1 短代码显示报价列表
-短代码函数：display_price_list_shortcode()，用于生成报价表格的 HTML 代码。
-获取数据：从数据库获取报价数据，并按照后台的列标题顺序进行显示。
-动态列标题：通过 lunaverse_get_column_titles() 获取列标题，确保前端与后台一致。
-2.2.2 表格样式设计
-CSS 样式：在 frontend/style.css 文件中定义表格样式，包括表头样式、行间隔色等。
-响应式设计：表格样式适配不同设备，保证在移动设备和桌面设备上的显示效果。
-3. 详细实现步骤
-3.1 开发后台功能
-创建数据库表：
+## 安装说明
 
-在 lunaverse_create_db_table() 函数中定义数据库表结构，在插件激活时执行。
-实现列标题的自定义和保存：
+1. **上传插件**：下载 Lunaverse Quote Plugin 插件，并将其上传到 WordPress 插件目录。
+2. **激活插件**：在 WordPress 后台的插件页面中激活插件。
+3. **配置插件**：激活插件后，可以在后台 "Lunaverse报价" 菜单中进入管理页面，配置自定义列标题和导入导出数据。
 
-创建管理页面的表单，包含列标题输入框。
-在 lunaverse_save_column_titles() 函数中保存自定义标题到数据库。
-实现报价导入导出：
+## 使用方法
 
-在 lunaverse_import_csv() 函数中处理 CSV 文件上传，解析并保存到数据库。
-在 lunaverse_export_csv() 函数中从数据库获取数据并生成 CSV 文件。
-生成后台菜单：
+1. **自定义列标题**：在 "Lunaverse报价" 页面中，填写自定义列标题，并点击保存按钮。
+2. **导入 CSV 数据**：上传 CSV 文件，点击 "导入 CSV" 按钮，将报价数据导入插件数据库。
+3. **导出 CSV 数据**：点击 "导出 CSV" 按钮，将当前报价数据导出到 CSV 文件。
+4. **在页面中嵌入报价列表**：使用 `[display_quotes]` 短代码将报价表格嵌入到 WordPress 页面或文章中。
+   - 示例：在编辑器中插入 `[display_quotes]` 即可。
 
-在 lunaverse_quote_plugin_menu() 中添加菜单项，调用页面渲染函数生成页面内容。
-3.2 开发前端功能
-定义短代码函数：
+## 技术要求
+- **WordPress 版本**：建议 5.6 及以上
+- **PHP 版本**：建议 7.4 及以上
 
-创建 display_price_list_shortcode() 短代码函数，在 WordPress 页面中使用 [display_quotes] 调用。
-动态获取列标题：
+## 文件结构
 
-在短代码函数中，使用 lunaverse_get_column_titles() 获取列标题，确保前端和后台一致。
-显示报价数据：
+- `lunaverse-quote-plugin.php` - 主插件文件，负责加载和初始化插件。
+- `includes/lunaverse-quote-core.php` - 核心功能文件，包含数据库表创建、列标题管理等。
+- `includes/lunaverse-quote-admin.php` - 后台管理文件，提供导入导出和数据管理功能。
+- `frontend/display-page.php` - 短代码展示文件，用于在前端渲染报价表格。
+- `frontend/style.css` - 前端表格样式文件，定义表格外观。
+- `admin/admin-page.php` - 后台页面模板，负责渲染后台的列标题设置和导入导出界面。
+- `README.txt` - 插件使用说明和更新日志文件。
 
-在 HTML 表格中循环显示报价数据，按照列标题的顺序显示。
-前端样式设计：
+## 常见问题
 
-定义表格样式，优化显示效果并添加响应式支持。
-4. 示例代码
-插件主文件：lunaverse-quote-plugin.php
-<?php
-/*
-Plugin Name: Lunaverse Quote Plugin
-Description: 一个自动报价生成插件，用于管理和展示 Lunaverse 报价信息。
-Version: 5.8
-Author: Sange-面向Chatgpt编程 2024/11/7
-*/
+1. **如何更新列标题？**
+   - 在 "Lunaverse报价" 页面中，编辑列标题表单，填写新的标题名称并保存。前端显示的列标题将同步更新。
 
-if (!defined('ABSPATH')) exit;
+2. **CSV 文件格式要求？**
+   - 导入的 CSV 文件应包含报价相关的字段，顺序为：产品名称、价格、单位、库存位置、备注、最小订单数量、显示顺序等。确保格式符合插件数据库表结构。
 
-// 插件激活和卸载钩子
-register_activation_hook(__FILE__, 'lunaverse_quote_plugin_activate');
-register_deactivation_hook(__FILE__, 'lunaverse_quote_plugin_deactivate');
+3. **如何在页面中展示报价列表？**
+   - 只需在页面或文章中插入 `[display_quotes]` 短代码，前端将自动渲染报价表格。
 
-// 引入核心功能和管理页面
-include_once plugin_dir_path(__FILE__) . 'includes/lunaverse-quote-core.php';
-include_once plugin_dir_path(__FILE__) . 'includes/lunaverse-quote-admin.php';
-
-// 添加菜单项
-function lunaverse_quote_plugin_menu() {
-    add_menu_page(
-        '报价管理',
-        'Lunaverse报价',
-        'manage_options',
-        'lunaverse-quote-plugin',
-        'lunaverse_render_admin_page'
-    );
-}
-add_action('admin_menu', 'lunaverse_quote_plugin_menu');
-
-// 加载样式
-function lunaverse_enqueue_styles() {
-    $css_path = plugin_dir_url(__FILE__) . 'frontend/style.css';
-    wp_enqueue_style('lunaverse-frontend-style', $css_path, array(), '1.0', 'all');
-}
-add_action('wp_enqueue_scripts', 'lunaverse_enqueue_styles', 999);
-
-5. 测试方案
-列标题自定义测试：
-
-在后台自定义列标题，保存后检查数据库是否更新。
-前端刷新页面，确认列标题与后台一致。
-数据导入导出测试：
-
-使用不同的 CSV 文件测试导入功能，检查数据库中的数据是否正确。
-测试导出功能，确保生成的 CSV 文件数据和格式正确。
-前端显示测试：
-
-确认短代码 [display_quotes] 在页面中显示数据，并检查样式是否正确。
-在不同屏幕尺寸上查看表格显示效果。
-6. 项目总结
-通过 Lunaverse Quote Plugin 插件，用户可以在 WordPress 后台管理报价数据，并在前端展示报价列表。插件具备灵活性，支持用户自定义列标题和批量操作，且确保了前后端数据一致性。
+## 支持与反馈
+如遇到问题或有改进建议，请联系插件作者以获取支持。感谢您使用 Lunaverse Quote Plugin 插件！

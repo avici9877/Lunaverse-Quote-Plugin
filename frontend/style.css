@@ -1,0 +1,27 @@
+/* 表格样式 */
+.lunaverse-quote-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.lunaverse-quote-table th,
+.lunaverse-quote-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.lunaverse-quote-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* 行交替背景色 */
+.lunaverse-quote-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.lunaverse-quote-table tbody tr:nth-child(even) {
+    background-color: #fff;
+}
